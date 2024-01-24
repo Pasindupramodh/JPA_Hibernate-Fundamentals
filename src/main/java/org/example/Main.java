@@ -8,22 +8,30 @@ import org.example.persistence.PersistenceUnitInfo;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+
+        Map<String,String> props = new HashMap<>();
+
+        props.put("hibernate.show_sql","true");
+        props.put("hibernate.hbm2ddl.auto","update");
+
+
 //        EntityManagerFactory emf = Persistence.createEntityManagerFactory("my-persistence-unit");
         EntityManagerFactory emf = new HibernatePersistenceProvider()
-                .createContainerEntityManagerFactory(new PersistenceUnitInfo(),new HashMap<>());
+                .createContainerEntityManagerFactory(new PersistenceUnitInfo(),props);
         EntityManager entityManager = emf.createEntityManager();//represent the context
         try {
             entityManager.getTransaction().begin();
 
             Product product = new Product();
 
-            product.setId(2L);
+            product.setId(3L);
             product.setName("Orange");
 
-            entityManager.persist(product);
+//            entityManager.persist(product);
 
 
             /*-----------
@@ -38,7 +46,7 @@ public class Main {
             -------------
             */
 
-            
+
             entityManager.getTransaction().commit();
         }finally {
             entityManager.close();
